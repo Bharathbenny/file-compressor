@@ -1,0 +1,31 @@
+In computer science and information theory, Huffman coding is an algorithm used for lossless data compression. 
+The idea is to assign variable-length codes to input characters, with shorter codes assigned to more frequent characters. 
+The method derives from the frequency of each character in the input data, creating an optimal prefix code that reduces the overall size of the data. 
+
+Huffman coding works by building a binary tree where each leaf node represents a character in the input. 
+The process begins with creating a frequency table of all characters. Then, nodes with the lowest frequencies are repeatedly merged to form new nodes, until a single tree is created. 
+The path from the root to each leaf forms the binary code for the character at that leaf. 
+
+Because Huffman codes are prefix-free, no code is a prefix of any other code, ensuring that the encoding is uniquely decodable. 
+This property allows efficient and error-free decoding of the compressed data. 
+
+Applications of Huffman coding include file compression formats such as ZIP and image compression formats like JPEG. 
+It is also used in MP3 audio compression and other multimedia formats where reducing storage and transmission costs is essential. 
+Although Huffman coding is optimal for single-character frequency distributions, it may not perform as well on data with complex patterns, where more advanced methods like arithmetic coding or adaptive Huffman coding might be used. 
+
+The algorithm is simple yet powerful. First, the frequency of each symbol in the data is counted. 
+Next, a priority queue or min-heap is built, where nodes with smaller frequencies have higher priority. 
+Nodes are then removed two at a time, merged into a new node with combined frequency, and added back to the heap. 
+This process continues until there is only one node left—the root of the Huffman tree. 
+
+Finally, a traversal of the tree assigns binary codes to each character. 
+Left edges are usually represented as '0' and right edges as '1', although this can be swapped without changing the result. 
+The encoding is then applied to the input data to generate the compressed bit sequence, which can be stored as a binary file. 
+
+During decompression, the Huffman tree is used to decode the bit sequence back to the original data. 
+Starting from the root, bits are read sequentially: '0' moves left, '1' moves right. 
+When a leaf node is reached, the corresponding character is output, and traversal starts again from the root. 
+
+Huffman coding exemplifies the principle of using frequency analysis for data compression. 
+Its simplicity, efficiency, and guaranteed optimality for known frequency distributions make it a cornerstone in the field of lossless compression. 
+Despite the advent of newer methods, Huffman coding remains widely taught, implemented, and used in various practical applications today.
