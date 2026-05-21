@@ -20,20 +20,20 @@ class HuffmanCoding:
         self.codes = {}
         self.reverse_mapping = {}
 
-    # Step 1: Frequency dictionary
+    # Step 1: Creating a frequency dictionary to store the frequency of each character in the text
     def make_frequency_dict(self, text):
         frequency = {}
         for character in text:
             frequency[character] = frequency.get(character, 0) + 1
         return frequency
 
-    # Step 2: Build min-heap
+    # Step 2: Building a min-heap to store the nodes with the lowest frequencie s
     def make_heap(self, frequency):
         for key in frequency:
             node = HuffmanNode(key, frequency[key])
             heapq.heappush(self.heap, node)
 
-    # Step 3: Merge nodes
+    # Step 3: Merging nodes with the lowest frequencies to form a Huffman tree
     def merge_nodes(self):
         while len(self.heap) > 1:
             node1 = heapq.heappop(self.heap)
@@ -43,7 +43,7 @@ class HuffmanCoding:
             merged.right = node2
             heapq.heappush(self.heap, merged)
 
-    # Step 4: Create binary codes
+    # Step 4: Creating binary codes for each character in the Huffman tree 
     def make_codes_helper(self, root, current_code):
         if root is None:
             return
@@ -51,6 +51,7 @@ class HuffmanCoding:
             self.codes[root.char] = current_code
             self.reverse_mapping[current_code] = root.char
             return
+        # Recursively traverse the left and right children of the current node and add '0' and '1' to the left and right child respectively
         self.make_codes_helper(root.left, current_code + "0")
         self.make_codes_helper(root.right, current_code + "1")
 
@@ -58,14 +59,14 @@ class HuffmanCoding:
         root = heapq.heappop(self.heap)
         self.make_codes_helper(root, "")
 
-    # Step 5: Encode text
+    # Step 5: Encoding the text using the binary codes created in the previous step
     def get_encoded_text(self, text):
         encoded_text = ""
         for character in text:
             encoded_text += self.codes[character]
         return encoded_text
 
-    # Step 6: Add padding to 8 bits
+    # Step 6: Adding padding to the encoded text to make it a multiple of 8 bits because each byte is 8 bits, if the encoded text is not a multiple of 8 bits, we need to add padding to make it a multiple of 8 bits
     def pad_encoded_text(self, encoded_text):
         extra_padding = 8 - len(encoded_text) % 8
         for i in range(extra_padding):
@@ -74,7 +75,7 @@ class HuffmanCoding:
         encoded_text = padded_info + encoded_text
         return encoded_text
 
-    # Step 7: Convert bits to bytes
+    # Step 7: Converting the padded encoded text to a byte array to store it in a binary file which is the compressed file
     def get_byte_array(self, padded_encoded_text):
         if len(padded_encoded_text) % 8 != 0:
             print("Encoded text not padded properly!")
@@ -86,7 +87,7 @@ class HuffmanCoding:
             b.append(int(byte, 2))
         return b
 
-    # Step 8: Compress
+    # Step 8: Compressing the file by following the steps above
     def compress(self):
         print("\nStarting Compression...")
         start_time = time.time()
@@ -119,7 +120,7 @@ class HuffmanCoding:
 
         return output_path
 
-    # Step 9: Remove padding
+    # Step 9: Removing padding from the encoded text to get the original text
     def remove_padding(self, padded_encoded_text):
         padded_info = padded_encoded_text[:8]
         extra_padding = int(padded_info, 2)
@@ -127,7 +128,7 @@ class HuffmanCoding:
         encoded_text = padded_encoded_text[:-1*extra_padding]
         return encoded_text
 
-    # Step 10: Decode text
+    # Step 10: Decoding the text using the binary codes of encoded text 
     def decode_text(self, encoded_text):
         current_code = ""
         decoded_text = ""
@@ -139,7 +140,7 @@ class HuffmanCoding:
                 current_code = ""
         return decoded_text
 
-    # Step 11: Decompress
+    # Step 11: Decompressing the file by following the steps
     def decompress(self, input_path):
         print("\nStarting Decompression...")
         start_time = time.time()
